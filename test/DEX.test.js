@@ -110,6 +110,36 @@ describe("DEX Contract", function () {
                 tokenBAddr
             )).to.emit(dex, "Swap");
         });
+        
+        it("Should quote input amount", async function () {
+            const tokenAAddr = await tokenA.getAddress();
+            const tokenBAddr = await tokenB.getAddress();
+
+            const amountOut = ethers.parseEther("1");
+            const amountIn = await dex.getAmountIn(amountOut, tokenAAddr, tokenBAddr);
+            expect(amountIn).to.be.gt(0n);
+        });
+
+        it("Should swap tokens for exact output", async function () {
+            const tokenAAddr = await tokenA.getAddress();
+            const tokenBAddr = await tokenB.getAddress();
+            const dexAddr = await dex.getAddress();
+
+            const amountOut = ethers.parseEther("1");
+            const amountIn = await dex.getAmountIn(amountOut, tokenAAddr, tokenBAddr);
+
+            await tokenA.connect(user2).approve(dexAddr, ethers.parseEther("10"));
+
+            await expect(dex.connect(user2).swapTokensForExactTokens(
+                amountOut,
+                ethers.parseEther("10"),
+                tokenAAddr,
+                tokenBAddr
+            )).to.emit(dex, "Swap");
+
+            const userBalance = await tokenB.balanceOf(user2.address);
+            expect(userBalance).to.be.gte(ethers.parseEther("1000") + amountOut);
+        });
     });
 
     describe("Access Control", function () {
