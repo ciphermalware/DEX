@@ -304,11 +304,59 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         emit Swap(msg.sender, poolId, tokenIn, amountIn, amountOut);
     }
 
-    function getAmountOut(uint256 amountIn, address tokenIn, address tokenOut) 
-        external 
-        view 
-        validTokenPair(tokenIn, tokenOut) 
-        returns (uint256) 
+function swapTokensForExactTokens(
+        uint256 amountOut,
+        uint256 amountInMax,
+        address tokenIn,
+        address tokenOut
+    ) external
+      nonReentrant
+      validTokenPair(tokenIn, tokenOut)
+      whenNotPaused
+      returns (uint256 amountIn)
+    {
+        require(amountOut > 0, "DEX: Invalid output amount");
+
+        bytes32 poolId = getPoolId(tokenIn, tokenOut);
+        Pool storage pool = pools[poolId];
+        require(pool.exists, "DEX: Pool does not exist");
+
+        if (pool.tokenA == tokenIn) {
+            require(amountOut < pool.reserveB, "DEX: Insufficient liquidity");
+            amountIn = _getAmountIn(amountOut, pool.reserveA, pool.reserveB);
+        } else {
+            require(amountOut < pool.reserveA, "DEX: Insufficient liquidity");
+            amountIn = _getAmountIn(amountOut, pool.reserveB, pool.reserveA);
+        }
+
+        require(amountIn <= amountInMax, "DEX: Excessive input amount");
+
+        uint256 protocolFee = (amountIn * feePercent * protocolFeePercent) / (FEE_DENOMINATOR * FEE_DENOMINATOR);
+
+        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+        IERC20(tokenOut).safeTransfer(msg.sender, amountOut);
+
+        if (protocolFee > 0) {
+            IERC20(tokenIn).safeTransfer(feeRecipient, protocolFee);
+        }
+
+        if (pool.tokenA == tokenIn) {
+            pool.reserveA += amountIn - protocolFee;
+            pool.reserveB -= amountOut;
+        } else {
+            pool.reserveB += amountIn - protocolFee;
+            pool.reserveA -= amountOut;
+        }
+
+        emit Swap(msg.sender, poolId, tokenIn, amountIn, amountOut);
+    }
+
+    function getAmountOut(uint256 amountIn, address tokenIn, address tokenOut)
+        external
+        view
+        validTokenPair(tokenIn, tokenOut)
+        returns (uint256)
+
     {
         require(amountIn > 0, "DEX: Invalid input amount");
         
@@ -326,7 +374,32 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
             return (amountInWithFee * pool.reserveA) / (pool.reserveB * FEE_DENOMINATOR + amountInWithFee);
         }
     }
+function _getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut) internal view returns (uint256) {
+        uint256 numerator = reserveIn * amountOut * FEE_DENOMINATOR;
+        uint256 denominator = (reserveOut - amountOut) * (FEE_DENOMINATOR - feePercent);
+        return (numerator / denominator) + 1;
+    }
 
+    function getAmountIn(uint256 amountOut, address tokenIn, address tokenOut)
+        external
+        view
+        validTokenPair(tokenIn, tokenOut)
+        returns (uint256)
+    {
+        require(amountOut > 0, "DEX: Invalid output amount");
+
+        bytes32 poolId = getPoolId(tokenIn, tokenOut);
+        Pool storage pool = pools[poolId];
+        require(pool.exists, "DEX: Pool does not exist");
+
+        if (pool.tokenA == tokenIn) {
+            require(amountOut < pool.reserveB, "DEX: Insufficient liquidity");
+            return _getAmountIn(amountOut, pool.reserveA, pool.reserveB);
+        } else {
+            require(amountOut < pool.reserveA, "DEX: Insufficient liquidity");
+            return _getAmountIn(amountOut, pool.reserveB, pool.reserveA);
+        }
+    }
     function getPoolInfo(address tokenA, address tokenB) 
         external 
         view 
