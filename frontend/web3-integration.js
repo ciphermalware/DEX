@@ -1,9 +1,10 @@
 // Basic configuration for interacting with the smart contracts
-// I have to to replace the placeholder addresses with the real deployed addresses
+// I have to replace the placeholder addresses with the real deployed addresses
 
 const DEX_ADDRESS = "0xYourDexAddress";
 const ROUTER_ADDRESS = "0xYourRouterAddress";
 
+// Simplified ABIs used by the frontend
 const DEX_ABI = [
   "function addLiquidity(address tokenA,address tokenB,uint256 amountADesired,uint256 amountBDesired,uint256 amountAMin,uint256 amountBMin) returns (uint256 amountA,uint256 amountB,uint256 liquidity)",
   "function removeLiquidity(address tokenA,address tokenB,uint256 liquidity,uint256 amountAMin,uint256 amountBMin) returns (uint256 amountA,uint256 amountB)",
@@ -12,7 +13,9 @@ const DEX_ABI = [
 ];
 
 const ROUTER_ABI = [
-  "function swapExactTokensForTokens(uint256 amountIn,uint256 amountOutMin,address[] path) returns (uint256 amountOut)"
+  "function swapExactTokensForTokens(uint256 amountIn,uint256 amountOutMin,address[] path,uint256 deadline) returns (uint256 amountOut)",
+  "function getAmountsOut(uint256 amountIn,address[] path) view returns (uint256[] amounts)",
+  "function getAmountsIn(uint256 amountOut,address[] path) view returns (uint256[] amounts)"
 ];
 
 const ERC20_ABI = [
@@ -41,4 +44,9 @@ async function connectWallet() {
   document.getElementById("walletInfo").style.display = "flex";
 }
 
-window.dexApi = { connectWallet };
+window.dexApi = {
+  connectWallet,
+  get signer() { return signer; },
+  get dex() { return dex; },
+  get router() { return router; }
+};
