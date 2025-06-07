@@ -15,11 +15,33 @@ async function swapTokens() {
   if (!amountIn || !tokenIn || !tokenOut) return;
   const amount = ethers.parseUnits(amountIn, 18);
   const tokenContract = new ethers.Contract(tokenIn, ERC20_ABI, dexApi.signer);
-  await tokenContract.approve(DEX_ADDRESS, amount);
-  await dexApi.dex.swapExactTokensForTokens(amount, 0, tokenIn, tokenOut);
+  await tokenContract.approve(ROUTER_ADDRESS, amount);
+  const path = [tokenIn, tokenOut];
+  const deadline = Math.floor(Date.now() / 1000) + 300; // 5 minutes
+  await dexApi.router.swapExactTokensForTokens(amount, 0, path, deadline);
+}
+
+async function updateSwapOutput() {
+  const tokenIn = document.getElementById("tokenIn").value;
+  const tokenOut = document.getElementById("tokenOut").value;
+  const amountIn = document.getElementById("swapAmountIn").value;
+  if (!amountIn || !tokenIn || !tokenOut) return;
+  const amount = ethers.parseUnits(amountIn, 18);
+  try {
+    const amounts = await dexApi.router.getAmountsOut(amount, [tokenIn, tokenOut]);
+    document.getElementById("swapAmountOut").value = ethers.formatUnits(amounts[1], 18);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 if (swapBtn) swapBtn.addEventListener("click", swapTokens);
+const amountInInput = document.getElementById("swapAmountIn");
+const tokenInSelect = document.getElementById("tokenIn");
+const tokenOutSelect = document.getElementById("tokenOut");
+if (amountInInput) amountInInput.addEventListener("input", updateSwapOutput);
+if (tokenInSelect) tokenInSelect.addEventListener("change", updateSwapOutput);
+if (tokenOutSelect) tokenOutSelect.addEventListener("change", updateSwapOutput);
 
 // Placeholder functions for liquidity management
 async function addLiquidity() {
