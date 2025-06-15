@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "./LiquidityToken.sol";
 
 contract DEX is ReentrancyGuard, Pausable, Ownable {
     using SafeERC20 for IERC20;
@@ -21,6 +22,7 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         uint256 totalLiquidity;
         mapping(address => uint256) liquidityBalances;
         bool exists;
+        address lpToken;
     }
 
     mapping(bytes32 => Pool) public pools;
