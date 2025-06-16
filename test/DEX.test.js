@@ -35,8 +35,9 @@ describe("DEX Contract", function () {
             await expect(dex.createPool(tokenAAddr, tokenBAddr))
                 .to.emit(dex, "PoolCreated");
             
-            const [reserveA, reserveB, totalLiquidity] = await dex.getPoolInfo(tokenAAddr, tokenBAddr);
+            const [reserveA, reserveB, totalLiquidity, lpToken] = await dex.getPoolInfo(tokenAAddr, tokenBAddr);
             expect(totalLiquidity).to.equal(0);
+            expect(lpToken).to.not.equal(ethers.ZeroAddress);
         });
 
         it("Should not create duplicate pools", async function () {
