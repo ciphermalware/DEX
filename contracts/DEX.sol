@@ -35,6 +35,7 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
     uint256 public constant FEE_DENOMINATOR = 10000;
     uint256 public protocolFeePercent = 5; // 5% of trading fees go to protocol
     address public feeRecipient;
+    IBridgeAdapter public bridgeAdapter;
 
     event PoolCreated(address indexed tokenA, address indexed tokenB, bytes32 poolId);
     event LiquidityAdded(address indexed user, bytes32 poolId, uint256 amountA, uint256 amountB, uint256 liquidity);
