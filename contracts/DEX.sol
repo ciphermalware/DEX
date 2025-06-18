@@ -45,6 +45,7 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
     event TokenSupported(address indexed token);
     event TokenUnsupported(address indexed token);
     event FeeRecipientUpdated(address oldRecipient, address newRecipient);
+    event BridgeAdapterUpdated(address oldAdapter, address newAdapter);
 
     constructor(address _feeRecipient) {
         require(_feeRecipient != address(0), "DEX: Invalid fee recipient");
