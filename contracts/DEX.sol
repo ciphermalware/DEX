@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "./LiquidityToken.sol";
+import "./interfaces/IBridgeAdapter.sol";
 
 contract DEX is ReentrancyGuard, Pausable, Ownable {
     using SafeERC20 for IERC20;
