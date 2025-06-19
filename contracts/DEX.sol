@@ -96,7 +96,14 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         emit FeeRecipientUpdated(oldRecipient, _feeRecipient);
     }
 
-    function pause() external onlyOwner {
+     function setBridgeAdapter(address adapter) external onlyOwner {
+        address old = address(bridgeAdapter);
+        bridgeAdapter = IBridgeAdapter(adapter);
+        emit BridgeAdapterUpdated(old, adapter);
+    }
+
+
+     function pause() external onlyOwner {
         _pause();
     }
 
