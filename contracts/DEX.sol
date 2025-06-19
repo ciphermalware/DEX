@@ -252,17 +252,13 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         emit LiquidityRemoved(msg.sender, poolId, amountA, amountB, liquidity);
     }
 
-    function swapExactTokensForTokens(
+    function _swapExactTokensForTokensTo(
         uint256 amountIn,
         uint256 amountOutMin,
         address tokenIn,
-        address tokenOut
-    ) external 
-      nonReentrant 
-      validTokenPair(tokenIn, tokenOut) 
-      whenNotPaused 
-      returns (uint256 amountOut) 
-    {
+        address tokenOut,
+        address to
+    ) internal returns (uint256 amountOut) {
         require(amountIn > 0, "DEX: Invalid input amount");
         
         bytes32 poolId = getPoolId(tokenIn, tokenOut);
