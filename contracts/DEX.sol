@@ -279,7 +279,7 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
             protocolFee = (amountIn * feePercent * protocolFeePercent) / (FEE_DENOMINATOR * FEE_DENOMINATOR);
             
             IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
-            IERC20(tokenOut).safeTransfer(msg.sender, amountOut);
+            IERC20(tokenOut).safeTransfer(to, amountOut);
             
             // Transfer protocol fee
             if (protocolFee > 0) {
