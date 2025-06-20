@@ -309,7 +309,31 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
             pool.reserveA -= amountOut;
         }
 
-        emit Swap(msg.sender, poolId, tokenIn, amountIn, amountOut);
+        emit Swap(to, poolId, tokenIn, amountIn, amountOut);
+    }
+
+    function swapExactTokensForTokens(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        address tokenIn,
+        address tokenOut
+    ) external nonReentrant validTokenPair(tokenIn, tokenOut) whenNotPaused returns (uint256 amountOut) {
+        return _swapExactTokensForTokensTo(amountIn, amountOutMin, tokenIn, tokenOut, msg.sender);
+    }
+
+    function swapAndBridge(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        address tokenIn,
+        address tokenOut,
+        string calldata bridgeName,
+        uint256 dstChainId,
+        bytes calldata recipient
+    ) external nonReentrant validTokenPair(tokenIn, tokenOut) whenNotPaused returns (uint256 amountOut) {
+        require(address(bridgeAdapter) != address(0), "DEX: bridge adapter not set");
+        amountOut = _swapExactTokensForTokensTo(amountIn, amountOutMin, tokenIn, tokenOut, address(this));
+        IERC20(tokenOut).approve(address(bridgeAdapter), amountOut);
+        bridgeAdapter.bridgeTokens(bridgeName, tokenOut, amountOut, dstChainId, recipient);
     }
 
 function swapTokensForExactTokens(
