@@ -43,6 +43,8 @@ contract BridgeAdapter is Ownable {
         emit BridgeAdded(name, adapter);
     }
 
+    /// @notice Disable an existing bridge
+    /// @param name Identifier of the bridge to disable
     function disableBridge(string calldata name) external onlyOwner {
         require(bridges[name].adapter != address(0), "BridgeAdapter: not found");
         bridges[name].enabled = false;
