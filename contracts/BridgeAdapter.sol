@@ -51,6 +51,8 @@ contract BridgeAdapter is Ownable {
         emit BridgeDisabled(name);
     }
 
+    /// @notice List all registered bridge names
+    /// @return Array of bridge identifiers
     function listBridges() external view returns (string[] memory) {
         return bridgeList;
     }
