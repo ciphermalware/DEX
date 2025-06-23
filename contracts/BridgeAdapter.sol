@@ -14,6 +14,8 @@ interface IBridgeProtocol {
     ) external;
 }
 
+/// @title BridgeAdapter
+/// @notice Allows routing token transfers through multiple bridge protocols
 contract BridgeAdapter is Ownable {
     using SafeERC20 for IERC20;
 
