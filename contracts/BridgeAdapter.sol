@@ -31,6 +31,10 @@ contract BridgeAdapter is Ownable {
     event BridgeDisabled(string name);
     event TokensBridged(string indexed name, address indexed user, address token, uint256 amount, uint256 dstChainId, bytes recipient);
 
+
+    /// @notice Register a new bridge implementation
+    /// @param name Identifier for the bridge
+    /// @param adapter Address of the bridge adapter contract
     function addBridge(string calldata name, address adapter) external onlyOwner {
         require(adapter != address(0), "BridgeAdapter: invalid adapter");
         require(bridges[name].adapter == address(0), "BridgeAdapter: exists");
