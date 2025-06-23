@@ -47,6 +47,12 @@ contract BridgeAdapter is Ownable {
         return bridgeList;
     }
 
+    /// @notice Bridge tokens using a configured adapter
+    /// @param name Identifier of the bridge to use
+    /// @param token Address of the token to bridge
+    /// @param amount Amount of tokens to bridge
+    /// @param dstChainId Destination chain identifier
+    /// @param recipient Encoded recipient on the destination chain
     function bridgeTokens(
         string calldata name,
         address token,
