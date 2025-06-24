@@ -66,6 +66,8 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         _;
     }
 
+     /// @notice Mark a token as supported for trading
+    /// @param token Address of the ERC20 token
     // Owner functions
     function addSupportedToken(address token) external onlyOwner {
         require(token != address(0), "DEX: Zero address");
