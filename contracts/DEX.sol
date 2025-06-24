@@ -76,6 +76,8 @@ contract DEX is ReentrancyGuard, Pausable, Ownable {
         emit TokenSupported(token);
     }
 
+    /// @notice Remove a token from the supported list
+    /// @param token Address of the ERC20 token
     function removeSupportedToken(address token) external onlyOwner {
         supportedTokens[token] = false;
         emit TokenUnsupported(token);
