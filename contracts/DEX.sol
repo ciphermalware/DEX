@@ -11,6 +11,8 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 import "./LiquidityToken.sol";
 import "./interfaces/IBridgeAdapter.sol";
 
+/// @title DEX
+/// @notice Simple decentralized exchange supporting token swaps and liquidity pools
 contract DEX is ReentrancyGuard, Pausable, Ownable {
     using SafeERC20 for IERC20;
     using Address for address;
