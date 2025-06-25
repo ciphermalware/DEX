@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
+/// @title ERC20Token
+/// @notice Basic ERC20 token with mint and burn capabilities
 contract ERC20Token is ERC20, Ownable, Pausable {
     uint8 private _decimals;
 
