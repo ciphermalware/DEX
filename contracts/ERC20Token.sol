@@ -10,6 +10,11 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 contract ERC20Token is ERC20, Ownable, Pausable {
     uint8 private _decimals;
 
+    /// @param name Token name
+    /// @param symbol Token symbol
+    /// @param decimals_ Number of decimals the token uses
+    /// @param initialSupply Initial token supply minted to the owner
+    /// @param owner Address that becomes the token owner
     constructor(
         string memory name,
         string memory symbol,
@@ -22,10 +27,14 @@ contract ERC20Token is ERC20, Ownable, Pausable {
         _mint(owner, initialSupply * 10**decimals_);
     }
 
+    /// @notice Returns the number of decimals used by the token
     function decimals() public view virtual override returns (uint8) {
         return _decimals;
     }
 
+    /// @notice Mint new tokens
+    /// @param to Recipient of the minted tokens
+    /// @param amount Amount of tokens to mint
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
