@@ -39,19 +39,26 @@ contract ERC20Token is ERC20, Ownable, Pausable {
         _mint(to, amount);
     }
 
+    /// @notice Burn tokens from the caller
+    /// @param amount Amount of tokens to burn
     function burn(uint256 amount) public {
         _burn(msg.sender, amount);
     }
 
+    /// @notice Burn tokens from another address using allowance
+    /// @param account Address to burn tokens from
+    /// @param amount Amount of tokens to burn
     function burnFrom(address account, uint256 amount) public {
         _spendAllowance(account, msg.sender, amount);
         _burn(account, amount);
     }
 
+    /// @notice Pause all token transfers
     function pause() public onlyOwner {
         _pause();
     }
 
+    /// @notice Unpause token transfers
     function unpause() public onlyOwner {
         _unpause();
     }
