@@ -22,6 +22,7 @@ contract GovernanceToken is ERC20Votes, Ownable, Pausable {
         _mint(owner, initialSupply);
     }
 
+    /// @notice Pause all token transfers
     function pause() external onlyOwner {
         _pause();
     }
