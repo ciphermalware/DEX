@@ -8,6 +8,10 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 /// @title GovernanceToken
 /// @notice ERC20 token with voting capabilities for protocol governance
 contract GovernanceToken is ERC20Votes, Ownable, Pausable {
+    /// @param name Token name
+    /// @param symbol Token symbol
+    /// @param initialSupply Amount minted to the owner
+    /// @param owner Address that receives the initial supply and becomes owner
     constructor(
         string memory name,
         string memory symbol,
