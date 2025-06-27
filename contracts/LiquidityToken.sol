@@ -19,6 +19,9 @@ contract LiquidityToken is ERC20, Ownable {
         _mint(to, amount);
     }
 
+    /// @notice Burn pool tokens from an address
+    /// @param from Address to burn from
+    /// @param amount Amount to burn
     function burn(address from, uint256 amount) external onlyOwner {
         _burn(from, amount);
     }
