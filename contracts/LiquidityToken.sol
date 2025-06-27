@@ -12,6 +12,9 @@ contract LiquidityToken is ERC20, Ownable {
     /// @param symbol Token symbol
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
+    /// @notice Mint pool tokens
+    /// @param to Recipient address
+    /// @param amount Amount to mint
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
