@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 /// @notice ERC20 token representing shares in a DEX liquidity pool
 /// The DEX contract owns the token and can mint/burn to track liquidity
 contract LiquidityToken is ERC20, Ownable {
+    /// @param name Token name
+    /// @param symbol Token symbol
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {}
 
     function mint(address to, uint256 amount) external onlyOwner {
