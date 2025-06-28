@@ -42,6 +42,8 @@ contract Pair is ReentrancyGuard, Pausable, Ownable {
         feeRecipient = _feeRecipient;
     }
 
+    /// @notice Update the trading fee taken by the pair
+    /// @param _feePercent Fee percentage in basis points
     function setFeePercent(uint256 _feePercent) external onlyOwner {
         require(_feePercent <= 1000, "Pair: fee too high");
         uint256 oldFee = feePercent;
