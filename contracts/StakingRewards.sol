@@ -68,6 +68,7 @@ contract StakingRewards is Ownable, ReentrancyGuard, Pausable {
         return (_balances[account] * (rewardPerToken() - userRewardPerTokenPaid[account])) / PRECISION + rewards[account];
     }
 
+    /// @notice Total tokens staked in the contract
     function totalSupply() external view returns (uint256) {
         return _totalSupply;
     }
