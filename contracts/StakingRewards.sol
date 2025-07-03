@@ -61,6 +61,9 @@ contract StakingRewards is Ownable, ReentrancyGuard, Pausable {
         return rewardPerTokenStored + ((lastTimeRewardApplicable() - lastUpdateTime) * rewardRate * PRECISION) / _totalSupply;
     }
 
+    /// @notice Calculate earned rewards for an account
+    /// @param account Address of the user
+    /// @return Amount of rewards earned
     function earned(address account) public view returns (uint256) {
         return (_balances[account] * (rewardPerToken() - userRewardPerTokenPaid[account])) / PRECISION + rewards[account];
     }
