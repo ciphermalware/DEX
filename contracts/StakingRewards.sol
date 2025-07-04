@@ -131,6 +131,8 @@ contract StakingRewards is Ownable, ReentrancyGuard, Pausable {
         emit RewardAdded(reward);
     }
 
+    /// @notice Set the duration over which rewards are distributed
+    /// @param _rewardsDuration New rewards duration in seconds
     function setRewardsDuration(uint256 _rewardsDuration) external onlyOwner {
         require(block.timestamp > periodFinish, "StakingRewards: ongoing rewards");
         rewardsDuration = _rewardsDuration;
