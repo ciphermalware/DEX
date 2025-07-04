@@ -87,6 +87,8 @@ contract StakingRewards is Ownable, ReentrancyGuard, Pausable {
         emit Staked(msg.sender, amount);
     }
 
+    /// @notice Withdraw staked tokens
+    /// @param amount Amount of tokens to withdraw
     function withdraw(uint256 amount) public nonReentrant updateReward(msg.sender) {
         require(amount > 0, "StakingRewards: cannot withdraw 0");
         require(_balances[msg.sender] >= amount, "StakingRewards: amount exceeds balance");
