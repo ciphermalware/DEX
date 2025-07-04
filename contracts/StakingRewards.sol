@@ -77,6 +77,8 @@ contract StakingRewards is Ownable, ReentrancyGuard, Pausable {
         return _balances[account];
     }
 
+    /// @notice Stake tokens to start earning rewards
+    /// @param amount Amount of staking tokens to deposit
     function stake(uint256 amount) external nonReentrant whenNotPaused updateReward(msg.sender) {
         require(amount > 0, "StakingRewards: cannot stake 0");
         _totalSupply += amount;
