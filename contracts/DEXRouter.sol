@@ -33,7 +33,7 @@ contract DEXRouter is Ownable {
 
     IDex public immutable dex;
 
-    
+    event MultiHopSwap(address indexed user, address[] path, uint256 amountIn, uint256 amountOut);
 
     constructor(address _dex) Ownable() {
         require(_dex != address(0), "DEXRouter: zero address");
