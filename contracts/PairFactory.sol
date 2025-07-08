@@ -17,7 +17,7 @@ contract PairFactory is Ownable {
     event FeeRecipientUpdated(address oldRecipient, address newRecipient);
 
     constructor(address _feeRecipient) {
-        require(_feeRecipient != address(0), "PairFactory: zero fee recipient");
+        
         feeRecipient = _feeRecipient;
     }
 
