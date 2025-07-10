@@ -6,9 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title LiquidityLocker
-/// @notice Allows users to lock ERC20 tokens (such as liquidity tokens) for a
-///         period of time. This can be used to encourage long term liquidity
-///         provision on the DEX.
+/// @notice Allows users to lock ERC20 tokens for a
+///  period of time. This can be used to encourage long term liquidity
+///  provision on the DEX.
 contract LiquidityLocker is Ownable {
     using SafeERC20 for IERC20;
 
