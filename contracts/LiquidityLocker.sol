@@ -22,6 +22,8 @@ contract LiquidityLocker is Ownable {
 
     event TokensLocked(address indexed user, address indexed token, uint256 amount, uint256 unlockTime);
     event TokensUnlocked(address indexed user, address indexed token, uint256 amount);
+    event LockExtended(address indexed user, address indexed token, uint256 index, uint256 newUnlockTime);
+    event LockAmountIncreased(address indexed user, address indexed token, uint256 index, uint256 amount);
 
     /// @notice Lock tokens until a future time
     /// @param token Address of the token to lock
