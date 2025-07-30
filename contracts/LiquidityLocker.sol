@@ -38,6 +38,33 @@ contract LiquidityLocker is Ownable {
         emit TokensLocked(msg.sender, token, amount, unlockTime);
     }
 
+/// @notice Increase the amount locked in an existing lock
+    /// @param token Address of the locked token
+    /// @param index Index of the lock entry
+    /// @param amount Additional amount to add to the lock
+    function increaseLockAmount(address token, uint256 index, uint256 amount) external {
+        require(amount > 0, "LiquidityLocker: zero amount");
+        Lock storage userLock = _locks[token][msg.sender][index];
+        require(userLock.amount > 0, "LiquidityLocker: no lock");
+        require(block.timestamp < userLock.unlockTime, "LiquidityLocker: already unlocked");
+        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
+        userLock.amount += amount;
+        emit LockAmountIncreased(msg.sender, token, index, amount);
+    }
+
+    /// @notice Extend the unlock time of an existing lock
+    /// @param token Address of the locked token
+    /// @param index Index of the lock entry
+    /// @param additionalDuration Additional time in seconds to extend the lock
+    function extendLock(address token, uint256 index, uint256 additionalDuration) external {
+        require(additionalDuration > 0, "LiquidityLocker: zero duration");
+        Lock storage userLock = _locks[token][msg.sender][index];
+        require(userLock.amount > 0, "LiquidityLocker: no lock");
+        require(block.timestamp < userLock.unlockTime, "LiquidityLocker: already unlocked");
+        userLock.unlockTime += additionalDuration;
+        emit LockExtended(msg.sender, token, index, userLock.unlockTime);
+    }
+
     /// @notice Unlock previously locked tokens
     /// @param token Address of the locked token
     /// @param index Index of the lock entry to unlock
