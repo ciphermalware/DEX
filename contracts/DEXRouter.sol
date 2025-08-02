@@ -52,7 +52,7 @@ contract DEXRouter is Ownable, ReentrancyGuard, Pausable {
         uint256 amountOutMin,
         address[] calldata path,
         uint256 deadline
-    ) external returns (uint256 amountOut) {
+    ) external nonReentrant whenNotPaused returns (uint256 amountOut) {
         require(path.length >= 2, "DEXRouter: invalid path");
         require(block.timestamp <= deadline, "DEXRouter: expired");
         uint256 amount = amountIn;
