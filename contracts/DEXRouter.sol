@@ -30,7 +30,7 @@ interface IDex {
 
 /// @title DEXRouter
 /// @notice Simple router contract that enables multi-hop swaps using the DEX
-contract DEXRouter is Ownable {
+contract DEXRouter is Ownable, ReentrancyGuard, Pausable {
     using SafeERC20 for IERC20;
 
     IDex public immutable dex;
