@@ -114,4 +114,14 @@ contract DEXRouter is Ownable, ReentrancyGuard, Pausable {
         require(token != address(0), "DEXRouter: zero address");
         IERC20(token).safeTransfer(owner(), amount);
     }
+
+    /// @notice Pause swap operations
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    /// @notice Unpause swap operations
+    function unpause() external onlyOwner {
+        _unpause();
+    }
 }
