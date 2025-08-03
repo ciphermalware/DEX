@@ -110,7 +110,7 @@ contract DEXRouter is Ownable, ReentrancyGuard, Pausable {
     }
 
     /// @notice Rescue tokens accidentally sent to this router
-    function rescueTokens(address token, uint256 amount) external onlyOwner {
+    function rescueTokens(address token, uint256 amount) external onlyOwner nonReentrant {
         require(token != address(0), "DEXRouter: zero address");
         IERC20(token).safeTransfer(owner(), amount);
     }
