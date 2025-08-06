@@ -7,20 +7,20 @@ describe("DEX Contract", function () {
     beforeEach(async function () {
         [owner, user1, user2] = await ethers.getSigners();
         
-        // Deploy DEX
+        
         const DEX = await ethers.getContractFactory("DEX");
         dex = await DEX.deploy(owner.address);
         
-        // Deploy test tokens
+        
         const ERC20Token = await ethers.getContractFactory("ERC20Token");
         tokenA = await ERC20Token.deploy("TokenA", "TKA", 18, 1000000, owner.address);
         tokenB = await ERC20Token.deploy("TokenB", "TKB", 18, 1000000, owner.address);
         
-        // Add tokens to supported list
+        
         await dex.addSupportedToken(await tokenA.getAddress());
         await dex.addSupportedToken(await tokenB.getAddress());
         
-        // Transfer tokens to users
+        
         await tokenA.transfer(user1.address, ethers.parseEther("1000"));
         await tokenB.transfer(user1.address, ethers.parseEther("1000"));
         await tokenA.transfer(user2.address, ethers.parseEther("1000"));
