@@ -1,6 +1,6 @@
 # Decentralized Exchange
 
-This project shows a basic decentralized exchange built with Solidity smart contracts. It lets users swap tokens, add liquidity and earn fees in the process. 
+This project shows a basic decentralized exchange built with Solidity. It lets users swap tokens, add liquidity and earn fees in the process. 
 Furthermore I have added more features like staking, token locking and cross chain bridges.
 
 
